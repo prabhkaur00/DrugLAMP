@@ -93,11 +93,12 @@ def main():
     if cfg.COMET.USE and comet_support:
         # LLM specific config
         cfg.COMET.TAG += f'bsz={cfg.SOLVER.BATCH_SIZE};e_i={cfg.RS.INIT_EPOCH};e_s={cfg.RS.EPOCH_STEP};m={cfg.RS.MAX_MARGIN};e_r={cfg.RS.RESET_EPOCH};lr={cfg.SOLVER.LR};ssl_lr={cfg.SOLVER.SSL_LR};cm_lr={cfg.SOLVER.CM_LR}'
-
+        save_dir = cfg.RESULT.OUTPUT_DIR + exp_name.replace('-', '/')
+        os.makedirs(save_dir, exist_ok=True)
         logger = CometLogger(
             project_name=cfg.COMET.PROJECT_NAME,   
             workspace=cfg.COMET.WORKSPACE,
-            save_dir=cfg.RESULT.OUTPUT_DIR + exp_name.replace('-', '/'),
+            save_dir=save_dir,
             auto_output_logging="simple",
             log_graph=True,
             log_code=False,
